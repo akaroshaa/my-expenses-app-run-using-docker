@@ -1,1 +1,1 @@
-docker-compose run app bash -c "python src/manage.py createsuperuser"
+docker-compose exec app bash -c "python src/manage.py createsuperuser"
