@@ -1,0 +1,84 @@
+
+docker-compose up --build
+
+docker-compose down --remove-orphans
+
+==============================
+
+to enter a container:
+
+docker exec -it 0434d3ae0719 /bin/bash
+
+==============================
+
+to enter an image:
+
+docker run -it app bash
+
+==============================
+
+
+docker-compose run --rm app bash -c "django-admin startproject app ."
+docker-compose run --rm app bash -c "python src/manage.py startapp core"
+docker-compose run app bash -c "python src/manage.py makemigrations"
+docker-compose run app bash -c "python src/manage.py migrate"
+
+
+docker-compose run app bash -c "python src/manage.py createsuperuser"
+
+
+===================================
+
+netstat -ano | findstr :5432
+
+taskkill /PID <PID> /F
+
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>> system clean up <<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+to stop all the containers:
+
+for /f "tokens=*" %i in ('docker ps -q') do docker stop %i
+
+
+==============================
+
+to delete all the images:
+
+for /F %i in ('docker images -a -q') do docker rmi -f %i
+
+=============================
+
+system clean up:
+
+docker container prune -f && docker builder prune -f && docker volume prune --all -f && docker network prune -f && docker system prune -f
+
+=============================
+
+
+
+
+################### to setup the app on someone else's system ##########################
+
+
+1. Provide "docker-compose.yml" and ".env" files to the person.
+
+2. Replace the image name from "app" to "akaroshaa/my_expenses_app:1.0" in "image" section from the service "app" present in the "docker-compose.yml" file
+as we want to use an existing image from the dockerhub.
+
+3. Remove the "build" section from the service "app" present in the "docker-compose.yml" file as we don't have to build a new image.
+Instead, we want to use an existing image from the dockerhub.
+
+4. echo docker-compose up -d > start.bat
+
+5. echo docker-compose down --remove-orphans > stop.bat
+
+6. Open "start.bat" file
+
+7. echo docker-compose run app bash -c "python src/manage.py createsuperuser" > create_user.bat
+
+8. Open "create_user.bat" file and create a user for the app and login with that user.
+
+9. Done!
