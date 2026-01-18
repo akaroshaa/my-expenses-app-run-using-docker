@@ -1,0 +1,6 @@
+
+for /f "tokens=*" %i in ('docker ps -q') do docker stop %i
+
+for /F %i in ('docker images -a -q') do docker rmi -f %i
+
+docker container prune -f && docker builder prune -f && docker volume prune --all -f && docker network prune -f && docker system prune -f
